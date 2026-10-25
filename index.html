@@ -1,0 +1,962 @@
+<script>document.documentElement.classList.add('anim');</script>
+<title>Agri Flora FZ-LLC</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout concept: a spec sheet printed on cool lab paper, cut three times by lit dark bands.
+   Five product hues drive the interface one at a time; each hue has a paper value and a lit value. */
+:root{
+  --paper:#F0F2EF; --paper-2:#E6EAE5; --paper-3:#DBE0D9;
+  --deep:#0A0F14; --deep-2:#101821; --deep-3:#16202B;
+
+  --gold-d:#8F6200;  --gold-l:#F0B429;
+  --ember-d:#B8431A; --ember-l:#FF7A4D;
+  --cyan-d:#0A6F80;  --cyan-l:#36D0E2;
+  --indigo-d:#4B46D6;--indigo-l:#9A9AFF;
+  --lime-d:#4A7210;  --lime-l:#A9E056;
+
+  --accent:var(--gold-d); --accent-lit:var(--gold-l);
+  --accent-soft:rgba(143,98,0,.13); --accent-soft-lit:rgba(240,180,41,.16);
+
+  /* surface-dependent, flipped by .dark */
+  --bg:var(--paper); --text:#111915; --mute:#5C6861;
+  --line:rgba(17,25,21,.15); --line-2:rgba(17,25,21,.07);
+  --c:var(--accent); --c-soft:var(--accent-soft); --panel:var(--paper-2);
+
+  --display:'Archivo',system-ui,-apple-system,Segoe UI,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --maxw:1240px;
+}
+.dark{
+  --bg:var(--deep); --text:#EDF1F4; --mute:#8A9AA7;
+  --line:rgba(237,241,244,.14); --line-2:rgba(237,241,244,.06);
+  --c:var(--accent-lit); --c-soft:var(--accent-soft-lit); --panel:var(--deep-2);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--text);font-family:var(--display);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:80;background:var(--paper)}
+body::after{content:"";position:fixed;inset:0;z-index:70;pointer-events:none;opacity:.035;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/></filter><rect width='150' height='150' filter='url(%23n)'/></svg>")}
+h1,h2,h3,h4{margin:0;text-wrap:balance;font-weight:700;letter-spacing:-.032em;line-height:1.02;font-stretch:110%}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+img{display:block;width:100%;height:100%;object-fit:cover}
+:focus-visible{outline:2px solid var(--c);outline-offset:3px}
+
+section,footer{background:var(--bg);color:var(--text)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.band{padding-block:clamp(68px,8.5vw,132px);position:relative}
+.rule{border-top:1px solid var(--line)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.lede{color:var(--mute);font-size:clamp(15px,1.5vw,17.5px);max-width:62ch}
+.snum{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--mute);display:block;margin-bottom:20px;text-transform:uppercase}
+.snum b{color:var(--c);font-weight:500;transition:color .6s}
+
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:2px;width:0;z-index:85;
+  background:linear-gradient(90deg,var(--gold-l),var(--ember-l),var(--cyan-l),var(--indigo-l),var(--lime-l))}
+
+/* reveal */
+.anim .rv{opacity:.001;transform:translateY(22px)}
+.anim .rv.in{opacity:1;transform:none;transition:opacity .85s cubic-bezier(.2,.7,.3,1),transform .85s cubic-bezier(.2,.7,.3,1)}
+@media (prefers-reduced-motion:reduce){.anim .rv{opacity:1!important;transform:none!important;transition:none!important}}
+
+/* ---------- image slots ---------- */
+.shot{margin:0;position:relative;overflow:hidden;background:var(--panel);border:1px solid var(--line);max-width:100%}
+.anim .shot .inner{clip-path:inset(0 0 100% 0);transform:scale(1.12)}
+.anim .shot.in .inner{clip-path:inset(0 0 0 0);transform:scale(1);
+  transition:clip-path 1.05s cubic-bezier(.16,.9,.22,1),transform 1.4s cubic-bezier(.16,.9,.22,1)}
+@media (prefers-reduced-motion:reduce){.anim .shot .inner{clip-path:none!important;transform:none!important;transition:none!important}}
+.shot .inner{position:absolute;inset:0;width:100%;height:100%}
+.ph{position:absolute;inset:0;display:grid;place-items:center;
+  background-image:repeating-linear-gradient(135deg,transparent 0 11px,var(--line-2) 11px 12px)}
+.ph span{font-family:var(--mono);font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--mute);
+  text-align:center;padding:12px 16px;border:1px solid var(--line);background:var(--bg);max-width:84%}
+.shotcap{position:absolute;left:0;bottom:0;display:flex;align-items:center;gap:9px;padding:9px 13px;
+  background:var(--bg);border-top:1px solid var(--line);border-right:1px solid var(--line);
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);max-width:100%}
+.shotcap i{width:5px;height:5px;border-radius:50%;background:var(--c);flex:none}
+.r45{aspect-ratio:4/5} .r11{aspect-ratio:1/1} .r32{aspect-ratio:3/2} .r219{aspect-ratio:21/9}
+.shot.onwhite{background:#fff}
+.shot.onwhite img{object-fit:contain;padding:7%;mix-blend-mode:multiply}
+
+/* ---------- header ---------- */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;background:rgba(240,242,239,.9);backdrop-filter:blur(16px) saturate(140%);
+  border-bottom:1px solid rgba(17,25,21,.12);color:#111915}
+.logo{width:auto;height:40px;mix-blend-mode:multiply}
+.topin{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:13px}
+.brand{display:flex;align-items:center;gap:11px;min-height:44px}
+.brand .nm{display:flex;flex-direction:column;gap:1px}
+.brand b{font-size:14px;font-weight:700;letter-spacing:.22em}
+.brand span{font-family:var(--mono);font-size:9px;letter-spacing:.28em;color:#8A9AA7}
+nav.main{display:flex;align-items:center;gap:2px}
+nav.main a{position:relative;font-family:var(--mono);font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:#5C6861;padding:10px 13px;min-height:44px;display:inline-flex;align-items:center;transition:color .25s}
+nav.main a::after{content:"";position:absolute;left:13px;right:13px;bottom:8px;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .32s}
+nav.main a:hover{color:#111915} nav.main a:hover::after{transform:scaleX(1)}
+@media(max-width:900px){nav.main a{display:none}}
+
+.cta{position:relative;display:inline-flex;align-items:center;gap:9px;min-height:46px;padding:0 20px;overflow:hidden;isolation:isolate;
+  border:1px solid var(--c);color:var(--c);font-family:var(--mono);font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;transition:color .3s,border-color .5s}
+.cta::before{content:"";position:absolute;inset:0;background:var(--c);transform:translateY(101%);transition:transform .4s cubic-bezier(.2,.8,.3,1);z-index:-1}
+.cta:hover{color:var(--bg)} .cta:hover::before{transform:none}
+.cta.solid{color:var(--bg);background:var(--c);transition:filter .3s,background .5s,border-color .5s}
+.cta.solid:hover{filter:brightness(1.12)}
+header .cta{border-color:var(--accent);color:var(--accent)}
+header .cta::before{background:var(--accent)}
+header .cta:hover{color:var(--paper)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden}
+#grain{position:absolute;inset:0;width:100%;height:100%}
+.glow{position:absolute;left:46%;top:-26%;width:min(1000px,120%);aspect-ratio:1;transform:translateX(-50%);pointer-events:none;
+  background:radial-gradient(circle,var(--accent-soft-lit),transparent 62%);transition:background .8s;animation:breathe 10s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.8;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.09)}}
+@media (prefers-reduced-motion:reduce){.glow{animation:none}}
+.heroin{position:relative;padding-block:clamp(54px,7vw,96px) clamp(44px,5.5vw,76px);display:flex;flex-wrap:wrap;gap:clamp(32px,4.5vw,64px);align-items:center}
+.herotext{flex:1.35 1 460px;min-width:0}
+.heroshot{flex:1 1 300px;min-width:0;max-width:440px}
+.eyebrow{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--c);transition:color .6s;margin-bottom:26px}
+.hl{font-size:clamp(42px,6.6vw,92px);font-weight:700;font-stretch:118%;letter-spacing:-.045em;line-height:.94;max-width:14ch}
+.hl .w{display:inline-block;overflow:hidden;vertical-align:bottom}
+.hl .w i{display:inline-block;font-style:normal}
+.anim .hl .w i{transform:translateY(106%)}
+.anim.loaded .hl .w i{transform:none;transition:transform .95s cubic-bezier(.16,.92,.22,1)}
+.hl em{font-style:normal;background:linear-gradient(100deg,var(--gold-l),var(--ember-l) 40%,var(--cyan-l) 74%,var(--lime-l));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.herocol{display:flex;flex-direction:column;gap:26px;margin-top:clamp(26px,3.4vw,38px);max-width:56ch}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px}
+
+/* ticker */
+.tick{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;padding-block:12px;background:var(--deep-2)}
+.tickrail{display:flex;width:max-content;animation:slide 54s linear infinite}
+@media (prefers-reduced-motion:reduce){.tickrail{animation:none}}
+@keyframes slide{to{transform:translateX(-50%)}}
+.tickrail span{font-family:var(--mono);font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;color:#8A9AA7;padding:0 24px;white-space:nowrap;display:inline-flex;align-items:center;gap:9px}
+.tickrail u{text-decoration:none}
+.tickrail i{width:5px;height:5px;border-radius:50%;flex:none}
+
+/* stats strip */
+.stats{display:flex;flex-wrap:wrap;gap:1px;background:var(--line-2);border-block:1px solid var(--line)}
+.stat{flex:1 1 160px;min-width:0;background:var(--paper);padding:30px 22px;position:relative;overflow:hidden}
+.stat::before{content:"";position:absolute;left:0;top:0;width:100%;height:3px;background:var(--sc)}
+.stat b{display:block;font-family:var(--mono);font-size:clamp(32px,3.8vw,48px);font-weight:500;letter-spacing:-.045em;line-height:1;color:var(--sc)}
+.stat span{display:block;margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--mute)}
+
+/* section head */
+.shead{display:flex;flex-wrap:wrap;gap:20px 52px;align-items:flex-end;justify-content:space-between}
+.shead h2{font-size:clamp(32px,4.7vw,60px);max-width:16ch}
+.shead .lede{flex:1 1 320px;min-width:0}
+
+/* about */
+.aboutgrid{display:flex;flex-wrap:wrap;gap:clamp(32px,5vw,68px);margin-top:54px;align-items:flex-start}
+.aboutgrid>div{flex:1 1 320px;min-width:0}
+.quote{font-size:clamp(21px,2.5vw,30px);line-height:1.34;letter-spacing:-.025em;font-stretch:106%}
+.kv{display:flex;flex-direction:column}
+.kv div{display:flex;flex-wrap:wrap;gap:6px 20px;padding:15px 0;border-top:1px solid var(--line-2)}
+.kv .k{flex:0 0 140px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);padding-top:4px}
+.kv .v{flex:1 1 180px;min-width:0;font-size:15px}
+
+/* products */
+.ptabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:46px}
+.ptab{display:inline-flex;align-items:center;gap:11px;min-height:48px;padding:0 18px;border:1px solid var(--line);
+  color:var(--mute);font-family:var(--mono);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;transition:all .3s}
+.ptab{padding:0 16px 0 0;gap:13px}
+.ptab .pth{width:46px;height:46px;flex:none;object-fit:cover;background:#fff;mix-blend-mode:multiply;transition:transform .3s}
+.ptab:hover{color:var(--text);border-color:var(--pc)} .ptab:hover .pth{transform:scale(1.06)}
+.ptab[aria-selected="true"]{color:var(--paper);background:var(--pc);border-color:var(--pc)}
+.ptab[aria-selected="true"] .pth{mix-blend-mode:normal}
+.pbody{display:flex;flex-wrap:wrap;margin-top:32px;border:1px solid var(--line);background:var(--paper-2)}
+.pshot{flex:1 1 280px;min-width:0;position:relative;border-right:1px solid var(--line)}
+.pshot .shot{border:0;height:100%;min-height:340px}
+.pinfo{flex:1.5 1 400px;min-width:0;padding:clamp(26px,3.6vw,46px);display:flex;flex-direction:column;gap:24px;
+  background:radial-gradient(circle at 88% 6%,var(--accent-soft),transparent 58%);transition:background .7s}
+@media(max-width:820px){.pshot{border-right:0;border-bottom:1px solid var(--line);flex-basis:100%}}
+.phead{display:flex;flex-wrap:wrap;gap:18px 24px;align-items:flex-end;justify-content:space-between}
+.pname{font-size:clamp(30px,3.8vw,46px)}
+.ptagline{font-family:var(--mono);font-size:11px;letter-spacing:.17em;text-transform:uppercase;color:var(--c);transition:color .6s}
+.picon{width:62px;height:62px;flex:none;opacity:.9}
+.picon svg{width:100%;height:100%}
+.gauges{display:flex;flex-direction:column}
+.g{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;padding:14px 0;border-top:1px solid var(--line-2)}
+.g .gk{flex:1 1 150px;min-width:0;font-size:14.5px;color:var(--mute)}
+.g .gv{font-family:var(--mono);font-size:15px;font-weight:500}
+.g .bar{flex:1 1 100%;height:3px;background:var(--line-2);margin-top:10px;overflow:hidden}
+.g .bar u{display:block;height:100%;width:0;background:rgba(17,25,21,.3);transition:width 1s cubic-bezier(.2,.75,.3,1),background .6s}
+.g.lead .gv{color:var(--c);transition:color .6s}
+.g.lead .bar u{background:var(--c)}
+@media (prefers-reduced-motion:reduce){.g .bar u{transition:none}}
+.freebadge{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;padding:10px 15px;border:1px solid var(--lime-d);
+  color:var(--lime-d);font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase}
+
+/* chart */
+.chart{margin-top:50px;display:flex;flex-direction:column}
+.crow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;padding:18px 0;border-top:1px solid var(--line-2)}
+.crow .cn{flex:0 0 160px;font-size:15px}
+.crow .ct{flex:1 1 180px;min-width:0;height:26px;background:var(--line-2);position:relative;overflow:hidden}
+.crow .ct u{position:absolute;inset:0 auto 0 0;width:0;background:var(--pc);transition:width 1.25s cubic-bezier(.2,.75,.3,1)}
+.crow .cv{flex:0 0 92px;text-align:right;font-family:var(--mono);font-size:14.5px;color:var(--pc)}
+.axis{display:flex;justify-content:space-between;padding-top:11px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--mute)}
+@media (prefers-reduced-motion:reduce){.crow .ct u{transition:none}}
+
+/* full-bleed band */
+.bleed{position:relative;overflow:hidden}
+.bleed .shot{border:0;aspect-ratio:21/9;min-height:300px}
+.bleed .cap{position:absolute;left:0;right:0;bottom:0;padding:clamp(22px,3vw,40px);
+  background:linear-gradient(0deg,rgba(10,15,20,.88),transparent);color:#EDF1F4}
+.bleed .cap p{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+.bleed .cap h3{margin-top:10px;font-size:clamp(22px,3.2vw,40px);max-width:20ch}
+
+/* builder */
+.build{border:1px solid var(--line);margin-top:50px;display:flex;flex-wrap:wrap;background:var(--deep-2)}
+.bsteps{flex:1.25 1 400px;min-width:0;padding:clamp(26px,3.6vw,46px);display:flex;flex-direction:column;gap:34px;border-right:1px solid var(--line)}
+.bout{flex:1 1 300px;min-width:0;padding:clamp(26px,3.6vw,46px);display:flex;flex-direction:column;gap:24px;
+  background:linear-gradient(165deg,var(--accent-soft-lit),transparent 56%),var(--deep-3);transition:background .7s}
+@media(max-width:880px){.bsteps{border-right:0;border-bottom:1px solid var(--line)}}
+.sl{display:flex;align-items:center;gap:12px;margin-bottom:15px}
+.sn{width:25px;height:25px;flex:none;display:grid;place-items:center;border:1px solid var(--line);font-family:var(--mono);font-size:10px;color:var(--mute)}
+.st{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{min-height:44px;padding:0 15px;border:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--mute);transition:all .25s;display:inline-flex;flex-direction:column;justify-content:center}
+.chip:hover{color:var(--text);border-color:var(--mute)}
+.chip[aria-pressed="true"]{background:var(--c);border-color:var(--c);color:var(--deep);box-shadow:0 0 32px -8px var(--c)}
+.chip small{display:block;font-size:9px;letter-spacing:.14em;opacity:.65;margin-top:-1px}
+.vol{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.vol input[type=range]{flex:1 1 200px;min-width:0;accent-color:var(--c);height:44px}
+.vol output{font-family:var(--mono);font-size:23px;font-weight:500;min-width:112px;color:var(--c);transition:color .6s}
+.bout h4{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);font-weight:500}
+.sum{display:flex;flex-direction:column}
+.sum div{display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:space-between;padding:12px 0;border-top:1px solid var(--line-2);font-size:14px}
+.sum span:first-child{color:var(--mute)}
+.sum span:last-child{font-family:var(--mono);text-align:right}
+.bignum{font-family:var(--mono);font-size:clamp(52px,7.2vw,82px);font-weight:500;letter-spacing:-.05em;line-height:1;color:var(--c);
+  text-shadow:0 0 48px var(--accent-soft-lit);transition:color .6s}
+.note{font-size:12.5px;color:var(--mute);line-height:1.55}
+
+/* routes */
+.routes{margin-top:50px;border:1px solid var(--line);padding:clamp(18px,2.4vw,32px);background:var(--deep-2)}
+.routes svg{width:100%;height:auto;display:block}
+.rpath{fill:none;stroke-width:1.5;opacity:.5}
+.rlabel{font-family:var(--mono);font-size:15px;letter-spacing:.06em}
+.rsub{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;fill:#8A9AA7}
+.rhub{font-family:var(--mono);font-size:11px;letter-spacing:.18em;fill:#EDF1F4}
+
+/* ports */
+.portgrid{display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,56px);margin-top:50px;align-items:flex-start}
+.mapbox{flex:1.4 1 380px;min-width:0;border:1px solid var(--line);background:var(--paper-2);padding:18px}
+.mapbox svg{width:100%;height:auto;display:block}
+.portlist{flex:1 1 280px;min-width:0;display:flex;flex-direction:column}
+.pitem{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;padding:14px 0;border-top:1px solid var(--line-2);text-align:left;width:100%;transition:color .22s,padding-left .22s}
+.pitem:hover,.pitem.on{color:var(--cyan-d);padding-left:8px}
+.pitem .pn{flex:1 1 130px;min-width:0;font-size:14.5px}
+.pitem .pc{font-family:var(--mono);font-size:12px;color:var(--mute)}
+.pitem.on .pc,.pitem:hover .pc{color:var(--cyan-d)}
+.pitem .pe{flex:0 0 100%;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.land{fill:var(--paper-3);stroke:var(--cyan-d);stroke-width:1.2;stroke-opacity:.45}
+.sea{stroke:var(--cyan-d);stroke-opacity:.16;stroke-width:1;fill:none}
+.pdot{fill:var(--cyan-d);opacity:.5;transition:opacity .25s}
+.pdot.on{opacity:1}
+.pring{fill:none;stroke:var(--cyan-d);stroke-width:1.3;opacity:0}
+.pring.on{opacity:1;animation:ping 2.3s ease-out infinite}
+@keyframes ping{0%{r:7;opacity:.8}100%{r:28;opacity:0}}
+@media (prefers-reduced-motion:reduce){.pring.on{animation:none;opacity:.4}}
+.plabel{font-family:var(--mono);font-size:11px;fill:var(--mute);letter-spacing:.09em}
+
+/* cards + checks */
+.cards{display:flex;flex-wrap:wrap;gap:1px;margin-top:50px;background:var(--line-2);border:1px solid var(--line-2)}
+.card{flex:1 1 234px;min-width:0;background:var(--paper);padding:32px 26px;display:flex;flex-direction:column;gap:13px;position:relative;transition:background .3s}
+.card::before{content:"";position:absolute;left:0;top:0;height:3px;width:0;background:var(--pc);transition:width .5s cubic-bezier(.2,.8,.3,1)}
+.card:hover::before{width:100%} .card:hover{background:var(--paper-2)}
+.card h3{font-size:18px}
+.card .n{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--pc)}
+.card p{font-size:14px;color:var(--mute);line-height:1.62}
+.checks{display:flex;flex-wrap:wrap;gap:10px;margin-top:42px}
+.check{display:inline-flex;align-items:center;gap:12px;padding:14px 20px;border:1px solid var(--lime-d);
+  font-family:var(--mono);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--lime-d)}
+.check svg{flex:none}
+.check path{stroke:var(--lime-d);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:22;stroke-dashoffset:22}
+.check.in path{animation:draw .55s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.check path{stroke-dashoffset:0}.check.in path{animation:none}}
+
+/* contact */
+.cgrid{display:flex;flex-wrap:wrap;gap:clamp(32px,5vw,68px);margin-top:50px;align-items:flex-start}
+.cgrid>*{flex:1 1 340px;min-width:0}
+form.enq{display:flex;flex-direction:column;gap:22px;border:1px solid var(--line);padding:clamp(24px,3vw,38px);background:var(--paper-2)}
+.frow{display:flex;flex-wrap:wrap;gap:22px}
+.f{flex:1 1 180px;min-width:0;display:flex;flex-direction:column;gap:7px}
+.f label{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.f input,.f textarea,.f select{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);color:var(--text);font-family:var(--display);font-size:15px;padding:10px 0;min-height:44px;transition:border-color .3s}
+.f textarea{resize:vertical;min-height:92px}
+.f input:focus,.f textarea:focus,.f select:focus{outline:none;border-bottom-color:var(--c)}
+.sent{font-family:var(--mono);font-size:12px;color:var(--lime-d)}
+.copyrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.copyrow .val{font-family:var(--mono);font-size:15px;word-break:break-all;min-width:0}
+.copy{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line);padding:8px 11px;min-height:34px;transition:color .2s,border-color .2s}
+.copy:hover{color:var(--c);border-color:var(--c)}
+
+footer.bot{padding-block:48px 36px}
+.botin{display:flex;flex-wrap:wrap;gap:18px 40px;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--mute)}
+.credit{display:inline-flex;align-items:center;gap:9px}
+.credit b{font-weight:500;letter-spacing:.13em;background:linear-gradient(95deg,var(--gold-l),var(--ember-l) 38%,var(--cyan-l) 70%,var(--lime-l));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.credit s{text-decoration:none;width:4px;height:4px;border-radius:50%;background:var(--ember-l);flex:none}
+</style>
+
+<div id="prog" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap topin">
+    <a class="brand" href="#top">
+      <img class="logo" src="img/logo.jpg" alt="Agri Flora FZ-LLC" width="640" height="336">
+    </a>
+    <nav class="main" aria-label="Main">
+      <a href="#products">Products</a><a href="#build">Shipment</a><a href="#markets">Markets</a><a href="#delivery">Delivery</a><a href="#about">About</a>
+    </nav>
+    <a class="cta" href="#contact"><span>Request offer</span></a>
+  </div>
+</header>
+
+<section class="hero dark" id="top">
+  <canvas id="grain" aria-hidden="true"></canvas>
+  <div class="glow" aria-hidden="true"></div>
+  <div class="wrap heroin">
+    <div class="herotext">
+      <p class="eyebrow">Protein Meals &amp; Feed Ingredients · Ras Al Khaimah, UAE</p>
+      <h1 class="hl" data-split>Protein that moves by the <em>container</em> load.</h1>
+      <div class="herocol">
+        <p class="lede">Agri Flora FZ-LLC supplies feather meal, poultry meal, fish meal, fish oil and soybean meal to feed mills across Asia, the EU and Africa — shipped in 20 and 40 FT containers from nine UAE ports.</p>
+        <div class="btnrow">
+          <a class="cta solid" href="#products"><span>View specifications</span>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"></path></svg></a>
+          <a class="cta" href="#build"><span>Build a shipment</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="heroshot rv">
+      <figure class="shot r45">
+        <div class="inner"><img src="img/port.jpg" alt="Container terminal with gantry cranes and stacked containers"></div>
+        <figcaption class="shotcap"><i></i>Container terminal · FCL export</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<div class="tick dark" aria-hidden="true"><div class="tickrail" id="rail"></div></div>
+
+<section>
+  <div class="wrap">
+    <div class="stats rv">
+      <div class="stat" style="--sc:var(--gold-d)"><b class="mono" data-count="13" data-suffix="+">0</b><span>Years exporting</span></div>
+      <div class="stat" style="--sc:var(--ember-d)"><b class="mono" data-count="5">0</b><span>Product lines</span></div>
+      <div class="stat" style="--sc:var(--cyan-d)"><b class="mono" data-count="9">0</b><span>UAE load ports</span></div>
+      <div class="stat" style="--sc:var(--lime-d)"><b class="mono" data-count="3">0</b><span>Continents served</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="about">
+  <div class="wrap">
+    <div class="rv"><span class="snum"><b>01</b> — About</span></div>
+    <div class="shead rv">
+      <h2>One of the Middle East's leading protein meal exporters.</h2>
+      <p class="lede">Established in 2013 in the Al Hamra Industrial Zone, Ras Al Khaimah. Today Agri Flora is among the region's largest exporters of rendered and marine protein meals.</p>
+    </div>
+    <div class="aboutgrid">
+      <div class="rv">
+        <p class="quote">We built a supply chain to Asia, the EU and Africa on one thing: buyers knowing exactly what lands in their mill, every container, every time.</p>
+        <p class="lede" style="margin-top:26px">Our range covers feather meal, poultry meal, fish meal, fish oil, poultry oil and soybean meal, alongside wider agricultural commodities. Every lot ships against a written specification, with certification free from melamine, E.&nbsp;coli and salmonella on our tested lines.</p>
+        <div class="kv" style="margin-top:34px">
+          <div><span class="k">Established</span><span class="v mono">2013</span></div>
+          <div><span class="k">Registered</span><span class="v">Free zone company, Ras Al Khaimah, UAE</span></div>
+          <div><span class="k">Markets</span><span class="v">Asia · European Union · Africa</span></div>
+          <div><span class="k">Category</span><span class="v">3rd category rendered protein meals, marine meals &amp; oils, oilseed meals</span></div>
+          <div><span class="k">Terms</span><span class="v mono">INCOTERMS 2010 — FOB / CIF / CFR</span></div>
+        </div>
+      </div>
+      <div class="rv">
+        <figure class="shot r45 onwhite">
+          <div class="inner"><img src="img/poultry.jpg" alt="Breeds of poultry, the raw material behind our rendered meals"></div>
+          <figcaption class="shotcap"><i></i>Poultry — raw material for rendered meals</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band rule" id="products">
+  <div class="wrap">
+    <div class="rv"><span class="snum"><b>02</b> — The range</span></div>
+    <div class="shead rv">
+      <h2>Five lines. Every number on the sheet.</h2>
+      <p class="lede">Select a product — the page takes its colour and its photograph. Bars are drawn to the typical value within each stated range.</p>
+    </div>
+    <div class="ptabs rv" id="ptabs" role="tablist" aria-label="Product range"></div>
+    <div class="pbody rv">
+      <div class="pshot">
+        <figure class="shot in onwhite">
+          <div class="inner"><img id="pShotImg" src="img/feather-meal.jpg" alt="Feather meal"></div>
+          <figcaption class="shotcap"><i></i><span id="pShotCap"></span></figcaption>
+        </figure>
+      </div>
+      <div class="pinfo">
+        <div class="phead">
+          <div>
+            <p class="ptagline" id="pTag"></p>
+            <h3 class="pname" id="pName" style="margin-top:11px"></h3>
+          </div>
+          <div class="picon" id="pIcon" aria-hidden="true"></div>
+        </div>
+        <p class="lede" id="pDesc"></p>
+        <div class="gauges" id="pGauges"></div>
+        <p class="note" id="pUse"></p>
+        <div id="pFree"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band rule">
+  <div class="wrap">
+    <div class="rv"><span class="snum"><b>03</b> — Comparison</span></div>
+    <div class="shead rv">
+      <h2>Protein, line by line.</h2>
+      <p class="lede">Guaranteed minimum protein across the meal range. Fish oil is excluded — it is traded on free fatty acid and iodine value instead.</p>
+    </div>
+    <div class="chart rv" id="chart"></div>
+    <div class="axis rv"><span>0%</span><span>40%</span><span>80% crude protein</span></div>
+  </div>
+</section>
+
+<section class="band dark" id="build">
+  <div class="wrap">
+    <div class="rv"><span class="snum"><b>04</b> — Shipment builder</span></div>
+    <div class="shead rv">
+      <h2>Build your shipment.</h2>
+      <p class="lede">Pick a product, a load port and a container size. We work out the container count and hand the summary to our trade desk with your enquiry.</p>
+    </div>
+    <div class="build rv">
+      <div class="bsteps">
+        <div><div class="sl"><span class="sn mono">1</span><span class="st">Product</span></div><div class="chips" id="bProd"></div></div>
+        <div><div class="sl"><span class="sn mono">2</span><span class="st">Load port</span></div><div class="chips" id="bPort"></div></div>
+        <div><div class="sl"><span class="sn mono">3</span><span class="st">Container</span></div><div class="chips" id="bCont"></div></div>
+        <div><div class="sl"><span class="sn mono">4</span><span class="st">Volume per shipment</span></div>
+          <div class="vol"><input id="bVol" type="range" min="20" max="1000" step="20" value="240" aria-label="Volume in metric tonnes"><output class="mono" id="bVolOut" for="bVol">240 MT</output></div></div>
+        <div><div class="sl"><span class="sn mono">5</span><span class="st">Incoterm</span></div><div class="chips" id="bTerm"></div></div>
+      </div>
+      <div class="bout">
+        <h4>Indicative loadout</h4>
+        <div><p class="bignum mono" id="bCount">0</p><p class="note" id="bCountLbl" style="margin-top:9px">containers</p></div>
+        <div class="sum" id="bSum"></div>
+        <p class="note">Container capacity is indicative — 20 FT ≈ 20 MT, 40 FT ≈ 26 MT in bags. Actual stuffing depends on bulk density and packing; our trade desk confirms on the offer.</p>
+        <button class="cta solid" id="bSend" style="align-self:flex-start"><span>Send this enquiry</span>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"></path></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band dark rule" id="markets">
+  <div class="wrap">
+    <div class="rv"><span class="snum"><b>05</b> — Markets</span></div>
+    <div class="shead rv">
+      <h2>Three continents out of one coast.</h2>
+      <p class="lede">Every shipment leaves the UAE. Schematic of the trade lanes we run — not drawn to geographic scale.</p>
+    </div>
+    <div class="routes rv">
+      <svg viewBox="0 0 1000 440" role="img" aria-label="Schematic of trade lanes from the UAE to Asia, the European Union and Africa">
+        <g id="routeLanes"></g>
+        <circle cx="150" cy="220" r="9" fill="var(--gold-l)"></circle>
+        <circle cx="150" cy="220" r="20" fill="none" stroke="var(--gold-l)" stroke-width="1.2" opacity=".45"></circle>
+        <circle cx="150" cy="220" r="32" fill="none" stroke="var(--gold-l)" stroke-width="1" opacity=".2"></circle>
+        <text class="rhub" x="150" y="278" text-anchor="middle">UAE · 9 PORTS</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="delivery">
+  <div class="wrap">
+    <div class="rv"><span class="snum"><b>06</b> — Delivery</span></div>
+    <div class="shead rv">
+      <h2>Nine load ports, one coast.</h2>
+      <p class="lede">We load from any major UAE port on the Arabian Gulf and the Gulf of Oman. Select a port to locate it. Schematic map — not to navigational scale.</p>
+    </div>
+    <div class="portgrid">
+      <div class="mapbox rv">
+        <svg viewBox="0 0 1000 600" role="img" aria-label="Schematic map of the United Arab Emirates showing nine load ports">
+          <path class="sea" d="M0 120 C200 150 360 190 520 240 C660 284 800 300 1000 296"></path>
+          <path class="sea" d="M0 70 C220 104 400 150 560 200 C700 244 840 258 1000 252"></path>
+          <path class="land" d="M150 480 L240 446 L310 416 L372 386 L440 350 L498 320 L556 290 L612 258 L664 216 L712 176 L740 146 L778 186 L804 240 L814 300 L808 356 L768 424 L706 472 L622 502 L520 518 L418 522 L328 518 L246 508 L150 492 Z"></path>
+          <g id="ports"></g>
+        </svg>
+      </div>
+      <div class="portlist rv" id="portlist"></div>
+    </div>
+    <div class="cards rv">
+      <div class="card" style="--pc:var(--gold-d)"><span class="n mono">FOB</span><h3>Free On Board</h3><p>You nominate the vessel. We deliver, clear for export and load at the named UAE port.</p></div>
+      <div class="card" style="--pc:var(--ember-d)"><span class="n mono">CFR</span><h3>Cost &amp; Freight</h3><p>We contract and pay the ocean freight through to your named destination port.</p></div>
+      <div class="card" style="--pc:var(--cyan-d)"><span class="n mono">CIF</span><h3>Cost, Insurance &amp; Freight</h3><p>Freight as CFR, with marine cargo insurance arranged in your favour for the voyage.</p></div>
+      <div class="card" style="--pc:var(--indigo-d)"><span class="n mono">20 / 40 FT</span><h3>Container loads</h3><p>Full container loads in 20 FT and 40 FT equipment, bagged or in big bags to your packing spec.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band rule">
+  <div class="wrap">
+    <div class="rv"><span class="snum"><b>07</b> — Quality</span></div>
+    <div class="shead rv">
+      <h2>Certified free from.</h2>
+      <p class="lede">Our feather meal, fish meal and soybean meal ship with certification against the three contaminants feed buyers test for first.</p>
+    </div>
+    <div class="checks" id="checks"></div>
+  </div>
+</section>
+
+<section class="band rule" id="contact">
+  <div class="wrap">
+    <div class="rv"><span class="snum"><b>08</b> — Contact</span></div>
+    <div class="shead rv">
+      <h2>Tell us what you need landed.</h2>
+      <p class="lede">Send the product, volume, packing and destination port. Our trade desk replies with availability, specification and price.</p>
+    </div>
+    <div class="cgrid">
+      <div class="rv">
+        <div class="kv">
+          <div><span class="k">Address</span><span class="v">Compass Building, Al Shohada Road,<br>Al Hamra Industrial Zone-FZ,<br>Ras Al Khaimah, United Arab Emirates</span></div>
+          <div><span class="k">Phone</span><span class="v"><span class="copyrow"><span class="val">+971 52 310 8231</span><button class="copy" data-copy="+971523108231">Copy</button></span></span></div>
+          <div><span class="k">Trade desk</span><span class="v"><span class="copyrow"><span class="val">contact@agriflorafz-llc.com</span><button class="copy" data-copy="contact@agriflorafz-llc.com">Copy</button></span></span></div>
+          <div><span class="k">General</span><span class="v"><span class="copyrow"><span class="val">info@agriflorafz-llc.com</span><button class="copy" data-copy="info@agriflorafz-llc.com">Copy</button></span></span></div>
+        </div>
+      </div>
+      <form class="enq rv" id="enq">
+        <div class="frow">
+          <div class="f"><label for="n1">Full name</label><input id="n1" name="name" type="text" autocomplete="name" required></div>
+          <div class="f"><label for="n2">Company</label><input id="n2" name="company" type="text" autocomplete="organization"></div>
+        </div>
+        <div class="frow">
+          <div class="f"><label for="n3">Email</label><input id="n3" name="email" type="email" autocomplete="email" required></div>
+          <div class="f"><label for="n4">Phone</label><input id="n4" name="phone" type="tel" autocomplete="tel"></div>
+        </div>
+        <div class="frow">
+          <div class="f"><label for="n5">Product</label><select id="n5" name="product"></select></div>
+          <div class="f"><label for="n6">Destination port</label><input id="n6" name="dest" type="text" placeholder="e.g. Chattogram, Bangladesh"></div>
+        </div>
+        <div class="f"><label for="n7">Requirement</label><textarea id="n7" name="msg" rows="4" placeholder="Volume, packing, incoterm and shipment window"></textarea></div>
+        <div class="frow" style="align-items:center">
+          <button class="cta solid" type="submit"><span>Send enquiry</span>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"></path></svg></button>
+          <p class="sent" id="sent" hidden>Enquiry prepared. Connect this form to your mail handler to deliver it.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="bot dark">
+  <div class="wrap botin">
+    <span>© 2026 Agri Flora FZ-LLC · All rights reserved</span>
+    <span>Al Hamra Industrial Zone-FZ · Ras Al Khaimah · UAE</span>
+    <span class="credit"><s></s>Developed by <b>FAYED HAMMAD</b></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root = document.documentElement;
+  function $(s,r){ return (r||document).querySelector(s); }
+  function el(t,c,h){ var e=document.createElement(t); if(c) e.className=c; if(h!=null) e.innerHTML=h; return e; }
+
+  var C={ gold:['#8F6200','#F0B429'], ember:['#B8431A','#FF7A4D'], cyan:['#0A6F80','#36D0E2'],
+          indigo:['#4B46D6','#9A9AFF'], lime:['#4A7210','#A9E056'] };
+  function soft(hex,a){ var n=parseInt(hex.slice(1),16); return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')'; }
+
+  var ICON={
+    meal:'<svg viewBox="0 0 200 200" fill="none" stroke="var(--c)" stroke-width="2.6" aria-hidden="true"><path d="M60 136 q40 -22 80 0"/><path d="M66 120 q34 -20 68 0"/><path d="M73 104 q27 -17 54 0"/><path d="M81 88 q19 -14 38 0"/><path d="M90 72 q10 -10 20 0"/><circle cx="100" cy="58" r="4"/></svg>',
+    feather:'<svg viewBox="0 0 200 200" fill="none" stroke="var(--c)" stroke-width="2.6" aria-hidden="true"><path d="M100 160 L100 48"/><path d="M100 140 q-26 -4 -36 -26 q24 2 36 18"/><path d="M100 120 q26 -4 36 -26 q-24 2 -36 18"/><path d="M100 100 q-24 -4 -33 -24 q22 2 33 16"/><path d="M100 82 q24 -4 33 -24 q-22 2 -33 16"/><path d="M100 64 q-16 -4 -22 -18 q15 2 22 12"/></svg>',
+    fish:'<svg viewBox="0 0 200 200" fill="none" stroke="var(--c)" stroke-width="2.6" aria-hidden="true"><path d="M44 100 q30 -34 62 -34 q34 0 52 34 q-18 34 -52 34 q-32 0 -62 -34 Z"/><path d="M44 100 L22 78 L26 100 L22 122 Z"/><circle cx="128" cy="92" r="3.4" fill="var(--c)"/></svg>',
+    oil:'<svg viewBox="0 0 200 200" fill="none" stroke="var(--c)" stroke-width="2.6" aria-hidden="true"><path d="M100 44 q36 44 36 70 a36 36 0 0 1 -72 0 q0 -26 36 -70 Z"/><path d="M78 118 a22 22 0 0 0 22 22" stroke-dasharray="4 6"/></svg>',
+    bean:'<svg viewBox="0 0 200 200" fill="none" stroke="var(--c)" stroke-width="2.6" aria-hidden="true"><ellipse cx="72" cy="104" rx="15" ry="19" transform="rotate(-22 72 104)"/><ellipse cx="104" cy="114" rx="15" ry="19" transform="rotate(8 104 114)"/><ellipse cx="136" cy="100" rx="15" ry="19" transform="rotate(-14 136 100)"/><path d="M52 142 q48 18 96 0" stroke-dasharray="4 7"/></svg>'
+  };
+
+  var PRODUCTS=[
+    { no:'01', name:'Feather Meal', icon:'feather', col:C.gold,
+      img:'feather-meal.jpg',
+      tag:'Hydrolysed · 75% protein min.',
+      desc:'Hydrolysed poultry feather meal, the highest-protein line we ship. Light brown to yellow, consistent batch to batch, and the product that built our export book.',
+      use:'Typical use — aquafeed and ruminant rations where bypass protein is the target.',
+      specs:[{k:'Crude protein',v:'75 % min.',pct:75,lead:true},{k:'Moisture',v:'9 % max.',pct:9},{k:'Fat',v:'12 % max.',pct:12},{k:'Colour',v:'Light brown to yellow',pct:null}],
+      free:true, protein:75 },
+    { no:'02', name:'Poultry Meal', icon:'meal', col:C.ember,
+      img:'poultry-meal.jpg',
+      tag:'3rd category · 55–60% protein',
+      desc:'Rendered poultry meal of 3rd category with high pepsin digestibility, milled and screened for free-flowing handling into feed mills.',
+      use:'Typical use — pet food and aquafeed where digestible animal protein is required.',
+      specs:[{k:'Crude protein',v:'55 – 60 %',pct:57.5,lead:true},{k:'Pepsin digestibility',v:'70 – 80 %',pct:75},{k:'Fat extract',v:'18 – 20 %',pct:19},{k:'Moisture',v:'5 – 10 %',pct:7.5},{k:'Ash',v:'5 – 10 %',pct:7.5}],
+      free:false, protein:57.5 },
+    { no:'03', name:'Fish Meal', icon:'fish', col:C.cyan,
+      img:'fish-meal.jpg',
+      tag:'Marine protein · 62% min.',
+      desc:'Brown marine fish meal at 62% minimum protein with controlled ash and moisture — the benchmark protein source for aquaculture and starter feeds.',
+      use:'Typical use — shrimp and finfish diets, piglet and poultry starter feeds.',
+      specs:[{k:'Crude protein',v:'62 % min.',pct:62,lead:true},{k:'Fat',v:'12 % max.',pct:12},{k:'Ash',v:'12 % max.',pct:12},{k:'Moisture',v:'6 % max.',pct:6},{k:'Colour',v:'Brown',pct:null}],
+      free:true, protein:62 },
+    { no:'04', name:'Fish Oil', icon:'oil', col:C.indigo,
+      img:'fish-oil.jpg',
+      tag:'Feed grade · FFA below 5%',
+      desc:'Feed-grade fish oil traded on free fatty acid and iodine value rather than protein, shipped in flexitanks or drums to your packing specification.',
+      use:'Typical use — energy and omega-3 fortification in aquafeed and poultry rations.',
+      specs:[{k:'Iodine value',v:'140 % min.',pct:70,lead:true},{k:'Free fatty acid',v:'Below 5 %',pct:5},{k:'Moisture',v:'0.3 – 0.5 %',pct:1}],
+      free:false, protein:null },
+    { no:'05', name:'Soybean Meal', icon:'bean', col:C.lime,
+      img:'soybean-meal.jpg',
+      tag:'Oilseed · 45% protein min.',
+      desc:'Light yellow soybean meal at 45% minimum protein, the vegetable protein base of most compound feed formulations we supply alongside.',
+      use:'Typical use — the protein base of layer, broiler and dairy compound feed.',
+      specs:[{k:'Crude protein',v:'45 % min.',pct:45,lead:true},{k:'Moisture',v:'8 % max.',pct:8},{k:'Colour',v:'Light yellow',pct:null}],
+      free:true, protein:45 }
+  ];
+
+  var PORTS=[
+    {n:'Khalifa Port',c:'AEKHL',e:'Abu Dhabi',x:310,y:414},
+    {n:'Mina Zayed',c:'AEMZD',e:'Abu Dhabi',x:258,y:446},
+    {n:'Musaffah Port',c:'AEAMF',e:'Abu Dhabi',x:276,y:472},
+    {n:'Port Jebel Ali',c:'AEJEA',e:'Dubai',x:470,y:338},
+    {n:'Mina Rashid',c:'AEDXB',e:'Dubai',x:522,y:308},
+    {n:'Mina Al Hamriyah',c:'AEHAM',e:'Dubai',x:576,y:278},
+    {n:'Port of Ras Al Khaimah',c:'AERKT',e:'Ras Al Khaimah',x:690,y:198},
+    {n:'Port of Khor Al Fakkan',c:'AEKLF',e:'Sharjah',x:788,y:248},
+    {n:'Port of Fujairah',c:'AEFJR',e:'Fujairah',x:806,y:312}
+  ];
+
+  function setAccent(pair){
+    root.style.setProperty('--accent',pair[0]);
+    root.style.setProperty('--accent-lit',pair[1]);
+    root.style.setProperty('--accent-soft',soft(pair[0],.13));
+    root.style.setProperty('--accent-soft-lit',soft(pair[1],.17));
+  }
+
+  /* hero headline: word split */
+  (function(){
+    var h=document.querySelector('[data-split]'); if(!h) return;
+    var html=h.innerHTML, parts=html.split(/(\s+)/), out='', i=0;
+    parts.forEach(function(p){
+      if(/^\s+$/.test(p)){ out+=' '; return; }
+      out+='<span class="w"><i style="transition-delay:'+(i*0.055).toFixed(3)+'s">'+p+'</i></span>';
+      i++;
+    });
+    h.innerHTML=out;
+  })();
+
+  /* hero canvas */
+  (function(){
+    var cv=$('#grain'); if(!cv) return;
+    var ctx=cv.getContext('2d'), w=0,h=0,dots=[],mx=-9e9,my=-9e9;
+    var pal=[C.gold[1],C.ember[1],C.cyan[1],C.indigo[1],C.lime[1]];
+    function size(){
+      var r=cv.parentNode.getBoundingClientRect(), dpr=Math.min(window.devicePixelRatio||1,2);
+      w=r.width; h=r.height; cv.width=w*dpr; cv.height=h*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+      var n=Math.max(36,Math.min(120,Math.round(w*h/13000)));
+      dots=[];
+      for(var i=0;i<n;i++) dots.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.7+.5,
+        vx:(Math.random()-.5)*.16,vy:-(Math.random()*.18+.04),c:pal[i%pal.length]});
+    }
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      for(var i=0;i<dots.length;i++){
+        var d=dots[i], dx=d.x-mx, dy=d.y-my, dm=dx*dx+dy*dy;
+        if(dm<22000){ var f=(1-dm/22000)*.9; d.x+=dx/Math.sqrt(dm+1)*f; d.y+=dy/Math.sqrt(dm+1)*f; }
+        d.x+=d.vx; d.y+=d.vy;
+        if(d.y<-8){ d.y=h+8; d.x=Math.random()*w; }
+        if(d.x<-8) d.x=w+8; if(d.x>w+8) d.x=-8;
+        for(var j=i+1;j<dots.length;j++){
+          var o=dots[j], ax=d.x-o.x, ay=d.y-o.y, aa=ax*ax+ay*ay;
+          if(aa<13000){ ctx.globalAlpha=(1-aa/13000)*.13; ctx.strokeStyle=d.c; ctx.lineWidth=.65;
+            ctx.beginPath(); ctx.moveTo(d.x,d.y); ctx.lineTo(o.x,o.y); ctx.stroke(); }
+        }
+        ctx.globalAlpha=.6; ctx.fillStyle=d.c;
+        ctx.beginPath(); ctx.arc(d.x,d.y,d.r,0,6.3); ctx.fill();
+      }
+      ctx.globalAlpha=1;
+      if(!reduce) requestAnimationFrame(draw);
+    }
+    size(); draw();
+    if(!reduce){
+      cv.parentNode.addEventListener('pointermove',function(e){ var r=cv.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top; });
+      cv.parentNode.addEventListener('pointerleave',function(){ mx=my=-9e9; });
+    }
+    var t; window.addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(function(){ size(); if(reduce) draw(); },180); });
+  })();
+
+  /* ticker */
+  (function(){
+    var rail=$('#rail'); if(!rail) return;
+    var items=[];
+    PRODUCTS.forEach(function(p){ items.push({c:p.col[1],t:p.name.toUpperCase()+' &nbsp;<u>'+(p.protein?p.protein+'% CP':'FFA &lt;5%')+'</u>'}); });
+    PORTS.forEach(function(p){ items.push({c:C.cyan[1],t:p.e.toUpperCase()+' &nbsp;<u>'+p.c+'</u>'}); });
+    items.push({c:C.indigo[1],t:'INCOTERMS 2010 &nbsp;<u>FOB / CIF / CFR</u>'});
+    items.push({c:C.lime[1],t:'<u>20 FT</u> &amp; <u>40 FT</u> CONTAINERS'});
+    var html='';
+    for(var k=0;k<2;k++) items.forEach(function(s){ html+='<span><i style="background:'+s.c+'"></i>'+s.t+'</span>'; });
+    rail.innerHTML=html;
+  })();
+
+  /* product explorer */
+  var setBuilderProduct=null;
+  (function(){
+    var tabs=$('#ptabs'); if(!tabs) return;
+    var cur=0;
+    PRODUCTS.forEach(function(p,i){
+      var b=el('button','ptab','<img class="pth" src="img/'+p.img+'" alt="" width="46" height="46"><span>'+p.name+'</span>');
+      b.type='button'; b.style.setProperty('--pc',p.col[0]);
+      b.setAttribute('role','tab'); b.setAttribute('aria-selected', i===0?'true':'false');
+      b.addEventListener('click',function(){ cur=i; render(); if(setBuilderProduct) setBuilderProduct(i); });
+      tabs.appendChild(b);
+    });
+    window.__selectProduct=function(i){ cur=i; render(); };
+    function render(){
+      var p=PRODUCTS[cur];
+      setAccent(p.col);
+      Array.prototype.forEach.call(tabs.children,function(b,i){ b.setAttribute('aria-selected', i===cur?'true':'false'); });
+      $('#pIcon').innerHTML=ICON[p.icon];
+      var si=$('#pShotImg'); si.src='img/'+p.img; si.alt=p.name+' sample';
+      $('#pShotCap').textContent=p.name+' · product sample';
+      $('#pUse').textContent=p.use;
+      $('#pTag').textContent=p.tag;
+      $('#pName').textContent=p.name;
+      $('#pDesc').textContent=p.desc;
+      var g=$('#pGauges'); g.innerHTML='';
+      p.specs.forEach(function(s){
+        var row=el('div','g'+(s.lead?' lead':''));
+        row.innerHTML='<span class="gk">'+s.k+'</span><span class="gv">'+s.v+'</span>'+(s.pct!=null?'<span class="bar"><u></u></span>':'');
+        g.appendChild(row);
+        if(s.pct!=null){ var u=row.querySelector('u');
+          requestAnimationFrame(function(){ requestAnimationFrame(function(){ u.style.width=Math.max(3,Math.min(100,s.pct))+'%'; }); }); }
+      });
+      $('#pFree').innerHTML = p.free
+        ? '<span class="freebadge"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"></path></svg>Free from melamine, E. coli &amp; salmonella</span>' : '';
+    }
+    render();
+  })();
+
+  /* comparison */
+  (function(){
+    var c=$('#chart'); if(!c) return;
+    PRODUCTS.filter(function(p){ return p.protein!=null; })
+      .sort(function(a,b){ return b.protein-a.protein; })
+      .forEach(function(p){
+        var r=el('div','crow'); r.style.setProperty('--pc',p.col[0]);
+        r.innerHTML='<span class="cn">'+p.name+'</span><span class="ct"><u data-w="'+(p.protein/80*100)+'"></u></span><span class="cv">'+p.protein+'%</span>';
+        c.appendChild(r);
+      });
+  })();
+
+  /* trade routes */
+  (function(){
+    var g=$('#routeLanes'); if(!g) return;
+    var NS='http://www.w3.org/2000/svg';
+    var LANES=[
+      {d:'M150 220 Q 520 60 900 132',  col:C.cyan[1],   name:'ASIA',           sub:'SOUTH & SOUTH-EAST ASIA', y:132},
+      {d:'M150 220 Q 520 212 900 228', col:C.indigo[1], name:'EUROPEAN UNION', sub:'MEDITERRANEAN & NORTH SEA', y:228},
+      {d:'M150 220 Q 520 392 900 340', col:C.lime[1],   name:'AFRICA',         sub:'EAST & WEST COAST', y:340}
+    ];
+    var pulses=[];
+    LANES.forEach(function(L,i){
+      var p=document.createElementNS(NS,'path');
+      p.setAttribute('d',L.d); p.setAttribute('class','rpath'); p.setAttribute('stroke',L.col); g.appendChild(p);
+      var t1=document.createElementNS(NS,'text');
+      t1.setAttribute('x',884); t1.setAttribute('y',L.y); t1.setAttribute('text-anchor','end');
+      t1.setAttribute('class','rlabel'); t1.setAttribute('fill',L.col); t1.setAttribute('dy','-14'); t1.textContent=L.name;
+      var t2=document.createElementNS(NS,'text');
+      t2.setAttribute('x',884); t2.setAttribute('y',L.y); t2.setAttribute('text-anchor','end');
+      t2.setAttribute('class','rsub'); t2.setAttribute('dy','8'); t2.textContent=L.sub;
+      g.appendChild(t1); g.appendChild(t2);
+      var end=document.createElementNS(NS,'circle');
+      end.setAttribute('cx',900); end.setAttribute('cy',L.y); end.setAttribute('r',5); end.setAttribute('fill',L.col); g.appendChild(end);
+      var dot=document.createElementNS(NS,'circle');
+      dot.setAttribute('r',4.5); dot.setAttribute('fill',L.col); g.appendChild(dot);
+      pulses.push({path:p,dot:dot,len:p.getTotalLength(),t:i*0.33});
+    });
+    if(reduce){
+      pulses.forEach(function(q){ var pt=q.path.getPointAtLength(q.len*.5); q.dot.setAttribute('cx',pt.x); q.dot.setAttribute('cy',pt.y); });
+      return;
+    }
+    (function run(){
+      pulses.forEach(function(q){
+        q.t+=0.0024; if(q.t>1) q.t=0;
+        var pt=q.path.getPointAtLength(q.len*q.t);
+        q.dot.setAttribute('cx',pt.x); q.dot.setAttribute('cy',pt.y);
+        q.dot.setAttribute('opacity', q.t<.08? q.t/.08 : q.t>.92? (1-q.t)/.08 : 1);
+      });
+      requestAnimationFrame(run);
+    })();
+  })();
+
+  /* ports */
+  (function(){
+    var g=$('#ports'), list=$('#portlist'); if(!g||!list) return;
+    var NS='http://www.w3.org/2000/svg', sel=0, dots=[], rings=[], btns=[];
+    PORTS.forEach(function(p,i){
+      var ring=document.createElementNS(NS,'circle');
+      ring.setAttribute('cx',p.x); ring.setAttribute('cy',p.y); ring.setAttribute('r',7); ring.setAttribute('class','pring');
+      var dot=document.createElementNS(NS,'circle');
+      dot.setAttribute('cx',p.x); dot.setAttribute('cy',p.y); dot.setAttribute('r',5.5); dot.setAttribute('class','pdot');
+      var tx=document.createElementNS(NS,'text');
+      tx.setAttribute('x',p.x+13); tx.setAttribute('y',p.y+4); tx.setAttribute('class','plabel'); tx.textContent=p.c;
+      g.appendChild(ring); g.appendChild(dot); g.appendChild(tx);
+      rings.push(ring); dots.push(dot);
+      var b=el('button','pitem','<span class="pn">'+p.n+'</span><span class="pc">'+p.c+'</span><span class="pe">'+p.e+'</span>');
+      b.type='button';
+      b.addEventListener('click',function(){ sel=i; paint(); });
+      b.addEventListener('mouseenter',function(){ sel=i; paint(); });
+      list.appendChild(b); btns.push(b);
+    });
+    function paint(){
+      dots.forEach(function(d,i){ d.classList.toggle('on',i===sel); });
+      rings.forEach(function(r,i){ r.classList.toggle('on',i===sel); });
+      btns.forEach(function(b,i){ b.classList.toggle('on',i===sel); });
+    }
+    paint();
+  })();
+
+  /* quality */
+  (function(){
+    var box=$('#checks'); if(!box) return;
+    ['Melamine','E. coli','Salmonella'].forEach(function(t){
+      box.appendChild(el('div','check rv','<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"></path></svg><span>Free from '+t+'</span>'));
+    });
+  })();
+
+  /* builder */
+  (function(){
+    var state={prod:0,port:3,cont:1,vol:240,term:1};
+    var CONT=[{k:'20 FT',cap:20},{k:'40 FT',cap:26}], TERM=['FOB','CFR','CIF'], hosts={};
+    function chips(sel,arr,key,label,sub){
+      var h=$(sel); if(!h) return; hosts[key]=h;
+      arr.forEach(function(item,i){
+        var b=el('button','chip',label(item)+(sub?'<small>'+sub(item)+'</small>':''));
+        b.type='button'; b.setAttribute('aria-pressed',state[key]===i?'true':'false');
+        b.addEventListener('click',function(){
+          state[key]=i; mark(key,i);
+          if(key==='prod'){ setAccent(PRODUCTS[i].col); if(window.__selectProduct) window.__selectProduct(i); }
+          calc();
+        });
+        h.appendChild(b);
+      });
+    }
+    function mark(key,i){ Array.prototype.forEach.call(hosts[key].children,function(c,j){ c.setAttribute('aria-pressed',j===i?'true':'false'); }); }
+    chips('#bProd',PRODUCTS,'prod',function(p){return p.name;});
+    chips('#bPort',PORTS,'port',function(p){return p.c;},function(p){return p.e;});
+    chips('#bCont',CONT,'cont',function(c){return c.k;},function(c){return '≈'+c.cap+' MT';});
+    chips('#bTerm',TERM,'term',function(t){return t;});
+    setBuilderProduct=function(i){ state.prod=i; mark('prod',i); calc(); };
+
+    var vol=$('#bVol'), volOut=$('#bVolOut');
+    vol.addEventListener('input',function(){ state.vol=+vol.value; volOut.textContent=state.vol+' MT'; calc(); });
+
+    var to=0,cur=0,raf=null;
+    function tick(){
+      var d=to-cur;
+      if(Math.abs(d)<0.5){ cur=to; $('#bCount').textContent=to; raf=null; return; }
+      cur+=d*0.22; $('#bCount').textContent=Math.round(cur); raf=requestAnimationFrame(tick);
+    }
+    function calc(){
+      var p=PRODUCTS[state.prod], port=PORTS[state.port], c=CONT[state.cont];
+      var n=Math.max(1,Math.ceil(state.vol/c.cap));
+      $('#bCountLbl').textContent=c.k+' container'+(n===1?'':'s')+' · '+state.vol+' MT';
+      if(reduce){ $('#bCount').textContent=n; } else { to=n; if(!raf) raf=requestAnimationFrame(tick); }
+      var s=p.specs[0];
+      $('#bSum').innerHTML=
+        '<div><span>Product</span><span>'+p.name+'</span></div>'+
+        '<div><span>'+s.k+'</span><span>'+s.v+'</span></div>'+
+        '<div><span>Load port</span><span>'+port.c+' · '+port.e+'</span></div>'+
+        '<div><span>Equipment</span><span>'+n+' × '+c.k+'</span></div>'+
+        '<div><span>Volume</span><span>'+state.vol+' MT</span></div>'+
+        '<div><span>Terms</span><span>'+TERM[state.term]+' · Incoterms 2010</span></div>';
+    }
+    calc();
+
+    $('#bSend').addEventListener('click',function(){
+      var p=PRODUCTS[state.prod], port=PORTS[state.port], c=CONT[state.cont];
+      var n=Math.max(1,Math.ceil(state.vol/c.cap));
+      var s=$('#n5'); if(s) s.value=p.name;
+      var ta=$('#n7');
+      if(ta) ta.value='Product: '+p.name+' ('+p.specs[0].k+' '+p.specs[0].v+')\n'+
+                      'Volume: '+state.vol+' MT\n'+'Equipment: '+n+' × '+c.k+'\n'+
+                      'Load port: '+port.n+' ('+port.c+'), '+port.e+'\n'+
+                      'Terms: '+TERM[state.term]+' — Incoterms 2010';
+      var t=$('#contact'); if(t) t.scrollIntoView({behavior: reduce?'auto':'smooth',block:'start'});
+      setTimeout(function(){ var a=$('#n1'); if(a) a.focus({preventScroll:true}); }, reduce?0:700);
+    });
+  })();
+
+  /* contact */
+  (function(){
+    var s=$('#n5');
+    if(s){ PRODUCTS.forEach(function(p){ var o=document.createElement('option'); o.textContent=p.name; s.appendChild(o); });
+           var o2=document.createElement('option'); o2.textContent='Other agricultural commodity'; s.appendChild(o2); }
+    var f=$('#enq');
+    if(f) f.addEventListener('submit',function(e){ e.preventDefault(); var n=$('#sent'); if(n) n.hidden=false; });
+    function pick(b){
+      var node=b.parentNode.querySelector('.val'); if(!node) return;
+      var r=document.createRange(); r.selectNodeContents(node);
+      var sl=window.getSelection(); sl.removeAllRanges(); sl.addRange(r);
+      b.textContent='Selected'; setTimeout(function(){ b.textContent='Copy'; },1600);
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('.copy'),function(b){
+      b.addEventListener('click',function(){
+        var v=b.getAttribute('data-copy');
+        var done=function(){ b.textContent='Copied'; setTimeout(function(){ b.textContent='Copy'; },1600); };
+        if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(done,function(){ pick(b); });
+        else pick(b);
+      });
+    });
+  })();
+
+  /* reveal + counters + chart + progress + image parallax */
+  (function(){
+    var items=document.querySelectorAll('.rv, .shot');
+    function count(e){
+      if(e.dataset.done) return; e.dataset.done='1';
+      var to=+e.getAttribute('data-count'), sfx=e.getAttribute('data-suffix')||'', t0=null;
+      if(reduce){ e.textContent=to+sfx; return; }
+      function step(ts){ if(!t0) t0=ts; var k=Math.min(1,(ts-t0)/1200), v=Math.round(to*(1-Math.pow(1-k,3)));
+        e.textContent=v+sfx; if(k<1) requestAnimationFrame(step); }
+      requestAnimationFrame(step);
+    }
+    function show(n){
+      n.classList.add('in');
+      Array.prototype.forEach.call(n.querySelectorAll('[data-count]'),count);
+      Array.prototype.forEach.call(n.querySelectorAll('.ct u'),function(u){
+        requestAnimationFrame(function(){ u.style.width=Math.min(100,+u.getAttribute('data-w'))+'%'; });
+      });
+    }
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){
+        es.forEach(function(en){ if(en.isIntersecting){ show(en.target); io.unobserve(en.target); } });
+      },{rootMargin:'0px 0px -8% 0px',threshold:.1});
+      Array.prototype.forEach.call(items,function(n){ io.observe(n); });
+      setTimeout(function(){ Array.prototype.forEach.call(items,function(n){ show(n); }); },3200);
+    } else Array.prototype.forEach.call(items,function(n){ show(n); });
+
+    var bar=$('#prog');
+    function prog(){
+      var h=document.documentElement.scrollHeight-window.innerHeight;
+      bar.style.width=(h>0?(window.scrollY/h)*100:0)+'%';
+    }
+    window.addEventListener('scroll',prog,{passive:true}); prog();
+  })();
+
+  Array.prototype.forEach.call(document.querySelectorAll('a[href^="#"]'),function(a){
+    a.addEventListener('click',function(e){
+      var t=document.querySelector(a.getAttribute('href'));
+      if(t){ e.preventDefault(); t.scrollIntoView({behavior: reduce?'auto':'smooth',block:'start'}); }
+    });
+  });
+
+  requestAnimationFrame(function(){ root.classList.add('loaded'); });
+})();
+</script>
