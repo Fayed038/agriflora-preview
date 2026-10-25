@@ -2,7 +2,7 @@
 <title>Agri Flora FZ-LLC</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
 <style>
 /* Layout concept: a spec sheet printed on cool lab paper, cut three times by lit dark bands.
    Five product hues drive the interface one at a time; each hue has a paper value and a lit value. */
@@ -85,7 +85,7 @@ section,footer{background:var(--bg);color:var(--text)}
 /* ---------- header ---------- */
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;background:rgba(240,242,239,.9);backdrop-filter:blur(16px) saturate(140%);
   border-bottom:1px solid rgba(17,25,21,.12);color:#111915}
-.logo{width:auto;height:40px;mix-blend-mode:multiply}
+.logo{width:auto;height:52px;mix-blend-mode:multiply}
 .topin{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:13px}
 .brand{display:flex;align-items:center;gap:11px;min-height:44px}
 .brand .nm{display:flex;flex-direction:column;gap:1px}
@@ -118,6 +118,10 @@ header .cta:hover{color:var(--paper)}
 .herotext{flex:1.35 1 460px;min-width:0}
 .heroshot{flex:1 1 300px;min-width:0;max-width:440px}
 .eyebrow{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--c);transition:color .6s;margin-bottom:26px}
+.wordmark{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 15px;margin:0 0 13px;line-height:1}
+.wordmark b{font-size:clamp(30px,4.2vw,56px);font-weight:700;font-stretch:120%;letter-spacing:.15em;color:var(--text)}
+.wordmark span{font-family:var(--mono);font-size:clamp(11px,1.1vw,14px);font-weight:500;letter-spacing:.34em;color:var(--c);transition:color .6s}
+:root[dir="rtl"] .wordmark b{letter-spacing:0;font-stretch:normal}
 .hl{font-size:clamp(42px,6.6vw,92px);font-weight:700;font-stretch:118%;letter-spacing:-.045em;line-height:.94;max-width:14ch}
 .hl .w{display:inline-block;overflow:hidden;vertical-align:bottom}
 .hl .w i{display:inline-block;font-style:normal}
@@ -303,10 +307,39 @@ footer.bot{padding-block:48px 36px}
   -webkit-background-clip:text;background-clip:text;color:transparent}
 .credit s{text-decoration:none;width:4px;height:4px;border-radius:50%;background:var(--ember-l);flex:none}
 
+/* ---------- language toggle + Arabic / RTL ---------- */
+.hdact{display:flex;align-items:center;gap:10px}
+.lang{min-height:46px;padding:0 15px;border:1px solid var(--line);color:var(--mute);
+  font-family:'IBM Plex Sans Arabic',var(--mono);font-size:13px;transition:color .25s,border-color .25s}
+.lang:hover{color:var(--text);border-color:var(--text)}
+:root[dir="rtl"]{--display:'IBM Plex Sans Arabic','Archivo',system-ui,sans-serif}
+:root[dir="rtl"] .lang{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em}
+:root[dir="rtl"] h1,:root[dir="rtl"] h2,:root[dir="rtl"] h3,:root[dir="rtl"] h4{font-stretch:normal;letter-spacing:0;line-height:1.28}
+:root[dir="rtl"] .hl{letter-spacing:0;line-height:1.2;font-size:clamp(34px,5.4vw,74px)}
+:root[dir="rtl"] .eyebrow,:root[dir="rtl"] .st,:root[dir="rtl"] .snum,:root[dir="rtl"] .f label,
+:root[dir="rtl"] .kv .k,:root[dir="rtl"] .stat span,:root[dir="rtl"] .ptagline,
+:root[dir="rtl"] .shotcap,:root[dir="rtl"] .bout h4{letter-spacing:.04em}
+:root[dir="rtl"] .lede,:root[dir="rtl"] .quote{line-height:1.85}
+/* SVG schematics stay left-to-right — they are diagrams, not text */
+:root[dir="rtl"] svg{direction:ltr}
+/* logical-direction fixes so the mirror is clean */
+#prog{inset-inline-start:0;left:auto}
+.shotcap{inset-inline-start:0;left:auto;border-inline-end:1px solid var(--line);border-right:0}
+.crow .ct u{inset-inline-start:0;left:auto;right:auto}
+.card::before{inset-inline-start:0;left:auto}
+.pshot{border-inline-end:1px solid var(--line);border-right:0}
+.bsteps{border-inline-end:1px solid var(--line);border-right:0}
+.pitem:hover,.pitem.on{padding-inline-start:8px;padding-left:0}
+.crow .cv,.sum span:last-child{text-align:end}
+.g .bar,.crow .ct{direction:ltr}
+@media(max-width:820px){.pshot{border-inline-end:0}}
+@media(max-width:880px){.bsteps{border-inline-end:0}}
+
 /* ---------- phone ---------- */
 @media (max-width:700px){
+  .lang{min-height:42px;padding:0 11px;font-size:12px}
   .topin{padding-block:9px}
-  .logo{height:30px}
+  .logo{height:36px}
   .cta{min-height:42px;padding:0 13px;font-size:10px;letter-spacing:.07em;gap:7px}
   section[id]{scroll-margin-top:68px}
   .band{padding-block:clamp(50px,11vw,74px)}
@@ -350,7 +383,10 @@ footer.bot{padding-block:48px 36px}
     <nav class="main" aria-label="Main">
       <a href="#products">Products</a><a href="#build">Shipment</a><a href="#markets">Markets</a><a href="#delivery">Delivery</a><a href="#about">About</a>
     </nav>
-    <a class="cta" href="#contact"><span>Request offer</span></a>
+    <div class="hdact">
+      <button class="lang" id="lang" type="button" aria-label="التبديل إلى العربية">عربي</button>
+      <a class="cta" href="#contact"><span>Request offer</span></a>
+    </div>
   </div>
 </header>
 
@@ -359,7 +395,8 @@ footer.bot{padding-block:48px 36px}
   <div class="glow" aria-hidden="true"></div>
   <div class="wrap heroin">
     <div class="herotext">
-      <p class="eyebrow">Protein Meals &amp; Feed Ingredients · Ras Al Khaimah, UAE</p>
+      <p class="wordmark"><b>AGRI FLORA</b><span>FZ-LLC</span></p>
+      <p class="eyebrow">Protein Meals &amp; Feed Ingredients · Ras Al Khaimah, UAE · Est. 2013</p>
       <h1 class="hl" data-split>Protein that moves by the <em>container</em> load.</h1>
       <div class="herocol">
         <p class="lede">Agri Flora FZ-LLC supplies feather meal, poultry meal, fish meal, fish oil and soybean meal to feed mills across Asia, the EU and Africa — shipped in 20 and 40 FT containers from nine UAE ports.</p>
@@ -994,5 +1031,167 @@ footer.bot{padding-block:48px 36px}
   });
 
   requestAnimationFrame(function(){ root.classList.add('loaded'); });
+})();
+</script>
+
+<script>
+/* Arabic (MSA) + RTL. Technical feed-trade wording — have a native speaker
+   review before this goes in front of real buyers. */
+(function(){
+  "use strict";
+  var root=document.documentElement, btn=document.getElementById('lang'), lang='en';
+
+  var HL={ en:'Protein that moves by the <em>container</em> load.',
+           ar:'بروتين يُشحن <em>بالحاوية</em> الكاملة.' };
+
+  var AR={
+    /* brand + hero */
+    'AGRI FLORA':'أجري فلورا',
+    'Protein Meals & Feed Ingredients · Ras Al Khaimah, UAE · Est. 2013':'مساحيق البروتين ومكوّنات الأعلاف · رأس الخيمة، الإمارات · تأسست 2013',
+    'Agri Flora FZ-LLC supplies feather meal, poultry meal, fish meal, fish oil and soybean meal to feed mills across Asia, the EU and Africa — shipped in 20 and 40 FT containers from nine UAE ports.':'تورّد أجري فلورا مسحوق الريش ومسحوق الدواجن ومسحوق السمك وزيت السمك وكسب فول الصويا إلى مصانع الأعلاف في آسيا والاتحاد الأوروبي وأفريقيا — تُشحن في حاويات 20 و40 قدماً من تسعة موانئ إماراتية.',
+    'View specifications':'عرض المواصفات','Build a shipment':'جهّز شحنتك','Request offer':'اطلب عرض سعر',
+    'Container terminal · FCL export':'محطة حاويات · تصدير بحاويات كاملة',
+    /* nav */
+    'Products':'المنتجات','Shipment':'الشحن','Markets':'الأسواق','Delivery':'التسليم','About':'نبذة عنا',
+    /* stats */
+    'Years exporting':'سنوات في التصدير','Product lines':'خطوط المنتجات',
+    'UAE load ports':'موانئ التحميل الإماراتية','Continents served':'قارات نخدمها',
+    /* section eyebrows */
+    'The range':'تشكيلة المنتجات','Comparison':'المقارنة','Shipment builder':'مُجهّز الشحنات',
+    'Quality':'الجودة','Contact':'تواصل معنا',
+    /* about */
+    "One of the Middle East's leading protein meal exporters.":'من أبرز مصدّري مساحيق البروتين في الشرق الأوسط.',
+    'Established in 2013 in the Al Hamra Industrial Zone, Ras Al Khaimah. Today Agri Flora is among the region’s largest exporters of rendered and marine protein meals.':'تأسست عام 2013 في المنطقة الصناعية الحمراء برأس الخيمة. واليوم تُعدّ أجري فلورا من أكبر مصدّري مساحيق البروتين الحيواني والبحري في المنطقة.',
+    'We built a supply chain to Asia, the EU and Africa on one thing: buyers knowing exactly what lands in their mill, every container, every time.':'بنينا سلسلة توريد إلى آسيا والاتحاد الأوروبي وأفريقيا على أساس واحد: أن يعرف المشتري بالضبط ما الذي يصل إلى مصنعه، في كل حاوية، وفي كل مرة.',
+    'Established':'سنة التأسيس','Registered':'التسجيل','Markets ':'الأسواق','Category':'الفئة','Terms':'الشروط',
+    'Free zone company, Ras Al Khaimah, UAE':'شركة منطقة حرة، رأس الخيمة، الإمارات',
+    'Asia · European Union · Africa':'آسيا · الاتحاد الأوروبي · أفريقيا',
+    '3rd category rendered protein meals, marine meals & oils, oilseed meals':'مساحيق بروتين حيواني من الفئة الثالثة، ومساحيق وزيوت بحرية، وكسب البذور الزيتية',
+    'INCOTERMS 2010 — FOB / CIF / CFR':'إنكوترمز 2010 — FOB / CIF / CFR',
+    'Poultry — raw material for rendered meals':'الدواجن — المادة الخام لمساحيق البروتين',
+    /* products */
+    'Five lines. Every number on the sheet.':'خمسة خطوط إنتاج. وكل رقم في الشهادة.',
+    'Select a product — the page takes its colour and its photograph. Bars are drawn to the typical value within each stated range.':'اختر منتجاً — تتبدّل ألوان الصفحة وصورتها تبعاً له. تُرسم الأشرطة عند القيمة النموذجية ضمن كل نطاق معلن.',
+    'Feather Meal':'مسحوق الريش','Poultry Meal':'مسحوق الدواجن','Fish Meal':'مسحوق السمك',
+    'Fish Oil':'زيت السمك','Soybean Meal':'كسب فول الصويا',
+    'Hydrolysed · 75% protein min.':'مُحلّل مائياً · بروتين 75٪ كحد أدنى',
+    '3rd category · 55–60% protein':'الفئة الثالثة · بروتين 55–60٪',
+    'Marine protein · 62% min.':'بروتين بحري · 62٪ كحد أدنى',
+    'Feed grade · FFA below 5%':'درجة علفية · أحماض دهنية حرة أقل من 5٪',
+    'Oilseed · 45% protein min.':'بذور زيتية · بروتين 45٪ كحد أدنى',
+    'Crude protein':'البروتين الخام','Moisture':'الرطوبة','Fat':'الدهون','Fat extract':'مستخلص الدهون',
+    'Ash':'الرماد','Colour':'اللون','Pepsin digestibility':'القابلية للهضم بالببسين',
+    'Iodine value':'الرقم اليودي','Free fatty acid':'الأحماض الدهنية الحرة',
+    '75 % min.':'75٪ كحد أدنى','62 % min.':'62٪ كحد أدنى','45 % min.':'45٪ كحد أدنى',
+    '9 % max.':'9٪ كحد أقصى','6 % max.':'6٪ كحد أقصى','8 % max.':'8٪ كحد أقصى','12 % max.':'12٪ كحد أقصى',
+    '55 – 60 %':'55 – 60٪','70 – 80 %':'70 – 80٪','18 – 20 %':'18 – 20٪','5 – 10 %':'5 – 10٪',
+    '140 % min.':'140٪ كحد أدنى','Below 5 %':'أقل من 5٪','0.3 – 0.5 %':'0.3 – 0.5٪',
+    'Light brown to yellow':'بنّي فاتح إلى أصفر','Brown':'بنّي','Light yellow':'أصفر فاتح',
+    'Free from melamine, E. coli & salmonella':'خالٍ من الميلامين والإشريكية القولونية والسالمونيلا',
+    /* comparison */
+    'Protein, line by line.':'البروتين، خطاً بخط.',
+    'Guaranteed minimum protein across the meal range. Fish oil is excluded — it is traded on free fatty acid and iodine value instead.':'الحد الأدنى المضمون من البروتين عبر تشكيلة المساحيق. زيت السمك مستثنى — إذ يُتداول على أساس الأحماض الدهنية الحرة والرقم اليودي.',
+    '80% crude protein':'80٪ بروتين خام',
+    /* builder */
+    'Build your shipment.':'جهّز شحنتك.',
+    'Pick a product, a load port and a container size. We work out the container count and hand the summary to our trade desk with your enquiry.':'اختر المنتج وميناء التحميل وحجم الحاوية. نحسب لك عدد الحاويات ونُحيل الملخّص إلى مكتبنا التجاري مع طلبك.',
+    'Product':'المنتج','Load port':'ميناء التحميل','Container':'الحاوية',
+    'Volume per shipment':'الكمية لكل شحنة','Incoterm':'شرط التسليم',
+    'Indicative loadout':'الحمولة التقديرية','Equipment':'المعدات','Volume':'الكمية',
+    'Container capacity is indicative — 20 FT ≈ 20 MT, 40 FT ≈ 26 MT in bags. Actual stuffing depends on bulk density and packing; our trade desk confirms on the offer.':'سعة الحاوية تقديرية — 20 قدماً ≈ 20 طناً، و40 قدماً ≈ 26 طناً معبأة في أكياس. التعبئة الفعلية تعتمد على الكثافة الظاهرية وطريقة التغليف، ويؤكدها مكتبنا التجاري في العرض.',
+    'Send this enquiry':'أرسل هذا الطلب',
+    /* markets */
+    'Three continents out of one coast.':'ثلاث قارات من ساحل واحد.',
+    'Every shipment leaves the UAE. Schematic of the trade lanes we run — not drawn to geographic scale.':'كل شحنة تنطلق من الإمارات. مخطط توضيحي لخطوط التجارة التي نشغّلها — غير مرسوم بمقياس جغرافي.',
+    /* delivery */
+    'Nine load ports, one coast.':'تسعة موانئ تحميل على ساحل واحد.',
+    'We load from any major UAE port on the Arabian Gulf and the Gulf of Oman. Select a port to locate it. Schematic map — not to navigational scale.':'نُحمّل من أي ميناء إماراتي رئيسي على الخليج العربي وخليج عُمان. اختر ميناءً لتحديد موقعه. خريطة توضيحية — ليست بمقياس ملاحي.',
+    'Khalifa Port':'ميناء خليفة','Mina Zayed':'ميناء زايد','Musaffah Port':'ميناء المصفح',
+    'Port Jebel Ali':'ميناء جبل علي','Mina Rashid':'ميناء راشد','Mina Al Hamriyah':'ميناء الحمرية',
+    'Port of Ras Al Khaimah':'ميناء رأس الخيمة','Port of Khor Al Fakkan':'ميناء خورفكان','Port of Fujairah':'ميناء الفجيرة',
+    'ABU DHABI':'أبوظبي','DUBAI':'دبي','SHARJAH':'الشارقة','FUJAIRAH':'الفجيرة','RAS AL KHAIMAH':'رأس الخيمة',
+    'Free On Board':'التسليم على ظهر السفينة','Cost & Freight':'التكلفة وأجرة الشحن',
+    'Cost, Insurance & Freight':'التكلفة والتأمين وأجرة الشحن','Container loads':'حمولات الحاويات',
+    'You nominate the vessel. We deliver, clear for export and load at the named UAE port.':'أنت تحدّد السفينة. ونحن نسلّم ونُخلّص للتصدير ونُحمّل في الميناء الإماراتي المتفق عليه.',
+    'We contract and pay the ocean freight through to your named destination port.':'نتعاقد وندفع أجرة الشحن البحري حتى ميناء الوصول الذي تحدده.',
+    'Freight as CFR, with marine cargo insurance arranged in your favour for the voyage.':'الشحن كما في CFR، مع ترتيب تأمين بحري على البضاعة لصالحك طوال الرحلة.',
+    'Full container loads in 20 FT and 40 FT equipment, bagged or in big bags to your packing spec.':'حاويات كاملة بقياس 20 و40 قدماً، معبأة في أكياس عادية أو أكياس كبيرة حسب مواصفات التغليف لديك.',
+    /* quality */
+    'Certified free from.':'خالٍ ومعتمد من.',
+    'Our feather meal, fish meal and soybean meal ship with certification against the three contaminants feed buyers test for first.':'يُشحن مسحوق الريش ومسحوق السمك وكسب فول الصويا بشهادات خلوّ من الملوّثات الثلاثة التي يفحصها مشترو الأعلاف أولاً.',
+    'Free from Melamine':'خالٍ من الميلامين','Free from E. coli':'خالٍ من الإشريكية القولونية','Free from Salmonella':'خالٍ من السالمونيلا',
+    /* contact */
+    'Tell us what you need landed.':'أخبرنا بما تحتاج وصوله.',
+    'Send the product, volume, packing and destination port. Our trade desk replies with availability, specification and price.':'أرسل المنتج والكمية والتغليف وميناء الوصول. يردّ مكتبنا التجاري بالتوافر والمواصفات والسعر.',
+    'Address':'العنوان','Phone':'الهاتف','Trade desk':'مكتب التجارة','General':'عام','Copy':'نسخ',
+    'Full name':'الاسم الكامل','Company':'الشركة','Email':'البريد الإلكتروني',
+    'Destination port':'ميناء الوصول','Requirement':'المتطلبات','Send enquiry':'إرسال الطلب',
+    'Other agricultural commodity':'سلعة زراعية أخرى',
+    'Enquiry prepared. Connect this form to your mail handler to deliver it.':'تم تجهيز الطلب. اربط هذا النموذج بخدمة البريد لديك لإرساله.',
+    /* footer */
+    '© 2026 Agri Flora FZ-LLC · All rights reserved':'© 2026 أجري فلورا منطقة حرة ذ.م.م · جميع الحقوق محفوظة',
+    'Al Hamra Industrial Zone-FZ · Ras Al Khaimah · UAE':'المنطقة الصناعية الحمراء · رأس الخيمة · الإمارات',
+    'Developed by':'تطوير'
+  };
+  var PH={ 'e.g. Chattogram, Bangladesh':'مثال: شيتاغونغ، بنغلاديش',
+           'Volume, packing, incoterm and shipment window':'الكمية والتغليف وشرط التسليم وفترة الشحن' };
+
+  var SEL='h1,h2,h3,h4,p,span,a,button,label,option,figcaption,output,text,b,small,em,i,u,div';
+
+  function swap(el,to){
+    if(el.children.length) return;                 /* leaves only */
+    var cur=(el.textContent||'').trim(); if(!cur) return;
+    if(to==='ar'){
+      if(el.hasAttribute('data-en')) return;
+      var v=AR[cur]; if(!v) return;
+      el.setAttribute('data-en',cur); el.textContent=v;
+    } else if(el.hasAttribute('data-en')){
+      el.textContent=el.getAttribute('data-en'); el.removeAttribute('data-en');
+    }
+  }
+  function walk(node,to){
+    if(node.nodeType!==1) return;
+    if(node.matches&&node.matches(SEL)) swap(node,to);
+    var l=node.querySelectorAll?node.querySelectorAll(SEL):[];
+    for(var i=0;i<l.length;i++) swap(l[i],to);
+  }
+  function placeholders(to){
+    ['n6','n7'].forEach(function(id){
+      var el=document.getElementById(id); if(!el) return;
+      var p=el.getAttribute('placeholder')||'';
+      if(to==='ar'){ if(PH[p]){ el.setAttribute('data-ph',p); el.setAttribute('placeholder',PH[p]); } }
+      else if(el.hasAttribute('data-ph')){ el.setAttribute('placeholder',el.getAttribute('data-ph')); el.removeAttribute('data-ph'); }
+    });
+  }
+  function buildHL(html){
+    var h=document.querySelector('.hl'); if(!h) return;
+    var parts=html.split(/(\s+)/), out='', i=0;
+    parts.forEach(function(p){
+      if(/^\s+$/.test(p)){ out+=' '; return; }
+      out+='<span class="w"><i style="transition-delay:'+(i*0.045).toFixed(3)+'s">'+p+'</i></span>'; i++;
+    });
+    h.innerHTML=out;
+  }
+
+  var obs=new MutationObserver(function(ms){
+    if(lang!=='ar') return;
+    ms.forEach(function(m){ for(var i=0;i<m.addedNodes.length;i++) walk(m.addedNodes[i],'ar'); });
+  });
+
+  function setLang(to){
+    lang=to;
+    root.setAttribute('dir', to==='ar'?'rtl':'ltr');
+    root.setAttribute('lang', to==='ar'?'ar':'en');
+    walk(document.body,to);
+    placeholders(to);
+    buildHL(HL[to]);
+    if(btn){ btn.textContent = to==='ar'?'EN':'عربي';
+             btn.setAttribute('aria-label', to==='ar'?'Switch to English':'التبديل إلى العربية'); }
+    try{ localStorage.setItem('af-lang',to); }catch(e){}
+    if(to==='ar') obs.observe(document.body,{childList:true,subtree:true}); else obs.disconnect();
+  }
+
+  if(btn) btn.addEventListener('click',function(){ setLang(lang==='ar'?'en':'ar'); });
+  try{ if(localStorage.getItem('af-lang')==='ar') setLang('ar'); }catch(e){}
 })();
 </script>
