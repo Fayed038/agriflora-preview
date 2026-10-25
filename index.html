@@ -238,8 +238,8 @@ header .cta:hover{color:var(--paper)}
 .routes{margin-top:50px;border:1px solid var(--line);padding:clamp(18px,2.4vw,32px);background:var(--deep-2)}
 .routes svg{width:100%;height:auto;display:block}
 .rpath{fill:none;stroke-width:1.5;opacity:.5}
-.rlabel{font-family:var(--mono);font-size:15px;letter-spacing:.06em}
-.rsub{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;fill:#8A9AA7}
+.rlabel{font-family:var(--mono);font-size:15px;letter-spacing:.06em;transform:translateY(-16px)}
+.rsub{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;fill:#8A9AA7;transform:translateY(11px)}
 .rhub{font-family:var(--mono);font-size:11px;letter-spacing:.18em;fill:#EDF1F4}
 
 /* ports */
@@ -302,6 +302,42 @@ footer.bot{padding-block:48px 36px}
 .credit b{font-weight:500;letter-spacing:.13em;background:linear-gradient(95deg,var(--gold-l),var(--ember-l) 38%,var(--cyan-l) 70%,var(--lime-l));
   -webkit-background-clip:text;background-clip:text;color:transparent}
 .credit s{text-decoration:none;width:4px;height:4px;border-radius:50%;background:var(--ember-l);flex:none}
+
+/* ---------- phone ---------- */
+@media (max-width:700px){
+  .topin{padding-block:9px}
+  .logo{height:30px}
+  .cta{min-height:42px;padding:0 13px;font-size:10px;letter-spacing:.07em;gap:7px}
+  section[id]{scroll-margin-top:68px}
+  .band{padding-block:clamp(50px,11vw,74px)}
+
+  /* product range: one swipeable row instead of a ragged wrap */
+  .ptabs{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;
+         scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .ptabs::-webkit-scrollbar{display:none}
+  .ptab{flex:0 0 auto;scroll-snap-align:start}
+  .pshot .shot{min-height:240px}
+  .shot.onwhite img{padding:5%}
+
+  /* builder: even two-column grid instead of ragged chips */
+  .chips{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .chip{width:100%;padding:0 11px}
+  .bsteps,.bout{gap:26px}
+
+  /* trade lanes: labels were unreadable at phone scale */
+  .rlabel{font-size:40px;transform:translateY(-34px)}
+  .rsub{font-size:25px;transform:translateY(26px)}
+  .rhub{font-size:30px}
+
+  /* port map: codes are illegible this small — the list below carries them */
+  .plabel{display:none}
+  .pdot{r:9}
+  .pring{stroke-width:2}
+  .mapbox{padding:12px}
+
+  .crow .cn{flex:1 1 100%} .crow .cv{flex:0 0 auto}
+  .kv .k{flex:0 0 100%}
+}
 </style>
 
 <div id="prog" aria-hidden="true"></div>
@@ -769,10 +805,10 @@ footer.bot{padding-block:48px 36px}
       p.setAttribute('d',L.d); p.setAttribute('class','rpath'); p.setAttribute('stroke',L.col); g.appendChild(p);
       var t1=document.createElementNS(NS,'text');
       t1.setAttribute('x',884); t1.setAttribute('y',L.y); t1.setAttribute('text-anchor','end');
-      t1.setAttribute('class','rlabel'); t1.setAttribute('fill',L.col); t1.setAttribute('dy','-14'); t1.textContent=L.name;
+      t1.setAttribute('class','rlabel'); t1.setAttribute('fill',L.col); t1.textContent=L.name;
       var t2=document.createElementNS(NS,'text');
       t2.setAttribute('x',884); t2.setAttribute('y',L.y); t2.setAttribute('text-anchor','end');
-      t2.setAttribute('class','rsub'); t2.setAttribute('dy','8'); t2.textContent=L.sub;
+      t2.setAttribute('class','rsub'); t2.textContent=L.sub;
       g.appendChild(t1); g.appendChild(t2);
       var end=document.createElementNS(NS,'circle');
       end.setAttribute('cx',900); end.setAttribute('cy',L.y); end.setAttribute('r',5); end.setAttribute('fill',L.col); g.appendChild(end);
